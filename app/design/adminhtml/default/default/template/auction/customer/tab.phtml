@@ -1,0 +1,29 @@
+<?php
+$customerId = $this->getRequest()->getParam('id');
+echo $customerId;
+$customer = Mage::getModel('customer/customer')->load($customerId);
+$bid_number = $this->getBidNumber($customerId);
+?>
+
+<div id="customer_info_tabs_bid_content" style=""><div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend">Bid Number</h4>
+            <div class="form-buttons"></div>
+        </div>
+        <div class="fieldset " id="bid_number_fieldset">
+            <div class="hor-scroll">
+                <table class="form-list" cellspacing="0">
+                    <tbody>
+                    <tr>
+                        <td class="label"><label for="bid_number">Custom Field: </label></td>
+                        <td class="value">
+                            <div class="store-scope">
+                                <input id="bid_number" name="bid_number" value="<?php echo $bid_number; ?>" disabled="disabled" class=" input-text" type="text">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

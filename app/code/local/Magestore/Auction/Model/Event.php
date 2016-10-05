@@ -2,6 +2,13 @@
 
 class Magestore_Auction_Model_Event {
 
+    public function customer_register_success($observer)
+    {
+        $customer = $observer->getCustomer();
+//        Zend_Debug::dump($customer);
+        $customer->setBidCustomer('5')->save();
+    }
+
     public function getlink() {
         $link = Mage::app()->getRequest()->getRouteName() .
                 Mage::app()->getRequest()->getControllerName() .

@@ -3,6 +3,7 @@
 class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Action {
 
     public function indexAction() {
+        die("ddd");
         if (Mage::getStoreConfig('auction/general/bidder_status') != 1) {
             $this->_redirect('', array());
             return;
@@ -125,8 +126,29 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
         $this->getResponse()->setHeader('Content-type', 'application/x-json');
         $this->getResponse()->setBody($html);
     }
+//    start customize
+    public function bidnumberAction()
+    {
+        if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
+            $this->_redirect('customer/account/login', array());
+            return;
+        }
 
-    public function customerbidAction() {
+        Mage::helper('auction')->updateAuctionStatus();
+        $this->loadLayout();
+        $this->getLayout()
+            ->getBlock('head')
+            ->setTitle(Mage::helper('core')->__('Your bid Number'));
+
+//        $listBidBlock = $this->getLayout()->getBlock('bidnumber');
+//        $pager = $this->getLayout()->createBlock('page/html_pager', 'bidnumber.pager')
+//            ->setCollection($listBidBlock->getListCustomerbid());
+//        $listBidBlock->setChild('pager', $pager);
+        $this->renderLayout();
+    }
+        //    end customize
+
+        public function customerbidAction() {
         if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
             $this->_redirect('customer/account/login', array());
             return;

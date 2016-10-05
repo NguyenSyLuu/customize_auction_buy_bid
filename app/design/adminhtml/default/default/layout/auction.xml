@@ -1,6 +1,16 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
-	
+    <!--start customize -->
+    <adminhtml_customer_edit>
+        <reference name="customer_edit_tabs">
+            <action method="addTab">
+                <name>my_custom_tab</name>
+                <block>auction/adminhtml_customer_tab</block>
+            </action>
+        </reference>
+    </adminhtml_customer_edit>
+    <!--end customize -->
+
     <adminhtml_auction_auction_index>
         <reference name="content">
             <block type="auction/adminhtml_auction" name="auction" />

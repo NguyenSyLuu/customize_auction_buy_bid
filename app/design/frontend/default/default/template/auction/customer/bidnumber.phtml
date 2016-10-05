@@ -1,0 +1,26 @@
+<?php
+$bidNumber = 123;
+?>
+<div class="col-main">
+    <div class="page-title">
+        <h1>My Bids</h1>
+    </div>
+    <form id="form-bidder" name="form-bidder" action="http://localhost/magento11/index.php/auction/index/savebiddername/" method="post">
+        <div class="fieldset">
+            <h2 class="legend">Your bid number</h2>
+            <div class="form-list">
+                <label for="content" class="required">Bid Bumber<em>*</em></label>
+                <div class="input-box">
+                    <?php echo $bidNumber;?>
+                </div>
+
+        </div>
+<!--        <div class="row" id="bidder_name_form_button" style="">-->
+<!--            <button class="button" style="float:right" type="submit">-->
+<!--                <span>Buy Bid more</span>-->
+<!--            </button>-->
+<!--        </div>-->
+    </form>
+    <style type="text/css">
+    </style>
+</div>

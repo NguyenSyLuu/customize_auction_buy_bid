@@ -38,6 +38,13 @@
                     <path>auction/index/emailsetting/</path>
                     <label>Auction Email Settings</label>
                 </action>
+                <!--start customize-->
+                <action method="addLink" translate="label" module="auction">
+                    <name>auction_bid_number</name>
+                    <path>auction/index/bidnumber/</path>
+                    <label>Bid Number</label>
+                </action>
+                <!--end customize-->
             </block>
         </reference>    
     </auction_default>
@@ -80,8 +87,20 @@
         <reference name="content">
             <block type="auction/customer_autobidlist" name="autobidlist" template="auction/customer/autobidlist.phtml" />
         </reference>	
-    </auction_index_autobidlist>		
-	
+    </auction_index_autobidlist>
+    <!--start customize -->
+    <auction_index_bidnumber>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/2columns-left.phtml</template>
+            </action>
+        </reference>
+        <update handle="auction_default" />
+        <reference name="content">
+            <block type="auction/customer_bidnumber" name="bidnumber" template="auction/customer/bidnumber.phtml" />
+        </reference>
+    </auction_index_bidnumber>
+    <!--end customize -->
     <auction_index_watchlist>	
         <reference name="root">
             <action method="setTemplate">
