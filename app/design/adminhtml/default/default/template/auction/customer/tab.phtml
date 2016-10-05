@@ -1,6 +1,5 @@
 <?php
 $customerId = $this->getRequest()->getParam('id');
-echo $customerId;
 $customer = Mage::getModel('customer/customer')->load($customerId);
 $bid_number = $this->getBidNumber($customerId);
 ?>
