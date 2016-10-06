@@ -1,9 +1,27 @@
 <?php
 
 class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Action {
+    public function testAction() {
+        $orderId = 1;
+        $productId = 2;
+        $sku = 3;
+        $customerId = 4;
+        $qty = 5;
+        $buy_data = array(
+            'customer_id' => $customerId,
+            'product_id'  => $productId,
+            'sku' => $sku,
+            'qty' => $qty,
+            'order_id' => $orderId,
+        );
+        Mage::getModel('auction/buybid')->setData($buy_data)->save();
+        $sku = "auctsdion_123";
+
+        $product_auction_id = Mage::helper('auction')->isAuctionPackage($sku);
+        Zend_Debug::dump(Mage::getModel('auction/buybid')->getCollection()->getData());
+    }
 
     public function indexAction() {
-        die("ddd");
         if (Mage::getStoreConfig('auction/general/bidder_status') != 1) {
             $this->_redirect('', array());
             return;

@@ -383,12 +383,27 @@ class Magestore_Auction_Model_Event {
             $quote = Mage::getModel('sales/quote')->load($quoteId);
             $items = $quote->getAllItems();
             foreach ($items as $item) {
+            //               start customize
+                $orderId = $order->getId();
+                $productId = $item->getProduct()->getId();
+                $sku = Mage::getModel('catalog/product')->load($productId)->getSku();
                 $customerId = Mage::getSingleton('customer/session')->getId();
                 $qty = $item->getQty();
+                $buy_data = array(
+                    'customer_id' => $customerId,
+                    'product_id'  => $productId,
+                    'sku' => $sku,
+                    'qty' => $qty,
+                    'order_id' => $orderId,
+                );
+                Mage::getModel('auction/buybid')->setData($buy_data)->save();
+                //end save bid package
                 $customer = Mage::getModel('customer/customer')->load($customerId);
                 $bid_number = $customer->getBidCustomer();
                 $add_bid_number = 10 * $qty;
                 $customer->setBidCustomer($bid_number + $add_bid_number)->save();
+            //               end customize
+
                 $bidId = $item->getOptionByCode('bid_id');
                 if ($bidId != null && $bidId->getValue() > 0) {
                     try {
