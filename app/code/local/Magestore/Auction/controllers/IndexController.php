@@ -2,23 +2,11 @@
 
 class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Action {
     public function testAction() {
-        $orderId = 1;
-        $productId = 2;
-        $sku = 3;
-        $customerId = 4;
-        $qty = 5;
-        $buy_data = array(
-            'customer_id' => $customerId,
-            'product_id'  => $productId,
-            'sku' => $sku,
-            'qty' => $qty,
-            'order_id' => $orderId,
-        );
-        Mage::getModel('auction/buybid')->setData($buy_data)->save();
-        $sku = "auctsdion_123";
-
-        $product_auction_id = Mage::helper('auction')->isAuctionPackage($sku);
-        Zend_Debug::dump(Mage::getModel('auction/buybid')->getCollection()->getData());
+        $customer = Mage::getModel('customer/customer')->load(3);
+        $bid_number = 5;
+            $customer->setBidCustomer(10)->save();
+        $msg = Mage::helper('auction')->__('You bid remaining: ').$bid_number  ;
+        Zend_Debug::dump($msg);
     }
 
     public function indexAction() {
@@ -582,6 +570,18 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
                             ->setEndTime($new_endTime);
                     $auction->save();
                 }
+                //start customize
+                $customerId =  $customerSession->getId();
+                $customer = Mage::getModel('customer/customer')->load($customerId);
+                $bid_number = $customer->getBidCustomer();
+                if($bid_number > 0){
+                    $customer->setBidCustomer($bid_number - 1)->save();
+                }else{
+                    $result .= $notice->getNoticeError($_helper->__('You not enough bid, please buy bid package.'));
+                    $this->getResponse()->setBody($result);
+                    return;
+                }
+                //end customize
 
                 if (isset($newTime)) {
                     $result .= '<div id="result_auction_end_time_' . $auction->getId() . '">' . $newTime . '</div>';
@@ -591,7 +591,7 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
                 $result .= '<div id="result_auction_info_' . $auction->getId() . '">' . $this->_getAuctionInfo($auction, $auctionbid) . '</div>';
                 $result .= '<div id="result_price_condition_' . $auction->getId() . '">' . $this->_getPriceAuction($auction, $auctionbid) . '</div>';
                 $result .= '<div id="result_current_bid_id_' . $auction->getId() . '">' . $auctionbid->getId() . '</div>';
-                $result .= $notice->getNoticeSuccess();
+                $result .= $notice->getNoticeSuccess(null, $bid_number);
                 $this->getResponse()->setBody($result);
 
                 $store = Mage::app()->getStore();

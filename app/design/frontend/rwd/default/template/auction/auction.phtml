@@ -67,6 +67,26 @@
                                 <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" class="v-middle" alt="" />
                             </span>	
                         </div>
+                        <div class="row">
+                            <?php
+                            $customerSession = Mage::getSingleton('customer/session');
+                            if ($customerSession->isLoggedIn()): ?>
+                            <?php
+                            $customerId =  $customerSession->getId();
+                            $customer = Mage::getModel('customer/customer')->load($customerId);
+                            $bid_number = $customer->getBidCustomer();
+                            if($bid_number > 0){?>
+                            <span>
+<!--                                --><?php //echo $this->__('You bid remaining: '); echo $bid_number;  ?>
+                                <?php echo '(' . $this->__('Buy more bid ') . '<a href="'. Mage::getBaseUrl().'10bid.html" >Here</a>)' ?>
+
+                            </span>
+                            <?php }else {?>
+                                <?php echo '(' . $this->__('You not have bid, please buy bid ') . '<a href="'. Mage::getBaseUrl().'10bid.html" >Here</a>)' ?>
+                            <?php } ?>
+
+                            <?php endif; ?>
+                        </div>
                         <?php if (Mage::getStoreConfig('auction/general/enable_autobid') == 1): ?>
                             <div class="row type-option">			
                                 <input type="radio" name="bid_type" value="1" checked="checked" id="auction_standard_bid"/>
