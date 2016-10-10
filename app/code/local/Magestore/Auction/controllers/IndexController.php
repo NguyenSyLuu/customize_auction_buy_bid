@@ -591,7 +591,7 @@ class Magestore_Auction_IndexController extends Mage_Core_Controller_Front_Actio
                 $result .= '<div id="result_auction_info_' . $auction->getId() . '">' . $this->_getAuctionInfo($auction, $auctionbid) . '</div>';
                 $result .= '<div id="result_price_condition_' . $auction->getId() . '">' . $this->_getPriceAuction($auction, $auctionbid) . '</div>';
                 $result .= '<div id="result_current_bid_id_' . $auction->getId() . '">' . $auctionbid->getId() . '</div>';
-                $result .= $notice->getNoticeSuccess(null, $bid_number);
+                $result .= $notice->getNoticeSuccess(null);
                 $this->getResponse()->setBody($result);
 
                 $store = Mage::app()->getStore();

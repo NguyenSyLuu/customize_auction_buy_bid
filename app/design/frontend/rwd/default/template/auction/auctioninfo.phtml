@@ -1,5 +1,6 @@
 <?php
  $auction = $this->getAuction();
+ $customerId = Mage::getSingleton('customer/session')->getId();
  if($auction)
  {
 	$lastBid = $this->getLastbid();
@@ -36,7 +37,16 @@
 				<td class="value bidder" id="bidder">
 					<?php echo $lastBid ? $lastBid->getBidderName() : $this->__('None') ?>
 				</td>
-			</tr>		
+			</tr>
+			<?php if($customerId) :?>
+					<?php $bidnumber = Mage::getModel('customer/customer')->load($customerId)->getBidCustomer(); ?>
+			<tr class="row">
+				<td class="title"><?php echo $this->__('Your bid time')?>:</td>
+				<td class="value bid_number" id="bid_number">
+					<?php echo $bidnumber ?>
+				</td>
+			</tr>
+			<?php endif; ?>
 			<tr class="row">
 				<td class="title"><?php echo $this->__('Starting Price')?>:</td>
 				<td class="value init-price"><?php echo Mage::helper('core')->currency($auction->getInitPrice()) ?></td>
