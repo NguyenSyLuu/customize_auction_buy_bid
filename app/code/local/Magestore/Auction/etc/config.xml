@@ -83,7 +83,7 @@
                         <class>auction/event</class>
                         <method>after_save_order</method>
                     </magestore_auction_observer>
-                </observers>	
+                </observers>
             </sales_order_save_after>
             <catalog_product_collection_apply_limitations_before>
                 <observers>
@@ -322,7 +322,18 @@
                     </magestore_auction_observer>
                 </observers>
             </customer_register_success>
-        </events>		
+        <!--//start customer-->
+            <sales_order_invoice_pay>
+                <observers>
+                    <magestore_auction_observer>
+                        <type>singleton</type>
+                        <class>auction/event</class>
+                        <method>sales_order_invoice_pay</method>
+                    </magestore_auction_observer>
+                </observers>
+            </sales_order_invoice_pay>
+            <!--end customerize-->
+        </events>
     </global>
     <default>
         <auction>
