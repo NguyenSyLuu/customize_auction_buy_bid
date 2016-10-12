@@ -50,6 +50,7 @@
                                 <?php endif; ?>
                             </span>
                         </div>
+
                         <div class="row" style="height: 35px;">
                             <input type="text" class="input-text" name="price" id="bid_price" onchange="validNumeric(this);" onkeypress="return disableEnterKey(event)" width="100px"/>
                             <input type="hidden" name="product_id" id="auction_product_id" value="<?php echo $product->getId() ?>">
@@ -71,19 +72,20 @@
                             <?php
                             $customerSession = Mage::getSingleton('customer/session');
                             if ($customerSession->isLoggedIn()): ?>
-                            <?php
-                            $customerId =  $customerSession->getId();
-                            $customer = Mage::getModel('customer/customer')->load($customerId);
-                            $bid_number = $customer->getBidCustomer();
-                            if($bid_number > 0){?>
-                            <span>
-<!--                                --><?php //echo $this->__('You bid remaining: '); echo $bid_number;  ?>
-                                <?php echo '(' . $this->__('Buy more bid ') . '<a href="'. Mage::getBaseUrl().'10bid.html" >Here</a>)' ?>
+                                <?php
+                                $customerId =  $customerSession->getId();
+                                $customer = Mage::getModel('customer/customer')->load($customerId);
+                                $bid_number = $customer->getBidCustomer();
+                                if($bid_number > 0){?>
+                                    <span>
+                                <?php echo $this->__('You bid number: ');  ?>
+                                        <span id="bid_number_<?php echo $customerId ?>"><?php echo $bid_number ?></span>
+<!--                                        --><?php //echo '(' . $this->__('Buy more bid ') . '<a href="'. Mage::getBaseUrl().'10bid.html" >Here</a>)' ?>
 
-                            </span>
-                            <?php }else {?>
-                                <?php echo '(' . $this->__('You not have bid, please buy bid ') . '<a href="'. Mage::getBaseUrl().'10bid.html" >Here</a>)' ?>
-                            <?php } ?>
+                                    </span>
+                                <?php }else {?>
+                                    <?php echo '(' . $this->__('You not have bid, please buy bid ') . '<a href="'. Mage::getBaseUrl().'10bid.html" >Here</a>)' ?>
+                                <?php } ?>
 
                             <?php endif; ?>
                         </div>
@@ -108,6 +110,7 @@
                     </div>
                     <div id="results_bid_after_<?php echo $auction->getId() ?>" style="display:none;"></div>
                     <input type="hidden" id="auction_id" value="<?php echo $auction->getId() ?>"/>
+                    <input type="hidden" id="customer_id" value="<?php echo $customerSession->getId() ?>"/>
                     <input type="hidden" id="is_bidding" value="0"/>
                     <input type="hidden" id="current_bid_id_<?php echo $auction->getId() ?>" value="<?php echo $lastBid->getId() ?>"/>
                     <input type="hidden" id="auction_end_time_<?php echo $auction->getId() ?>" value="<?php echo $end_time ?>"/>
@@ -218,6 +221,15 @@
                                     return;
             <?php else: ?>
                                     placeBid('<?php echo $this->getBidUrl() ?>');
+                                new Ajax.Request('<?php echo Mage::getBaseUrl().'auction/index/updatebidnumber' ?>', {
+                                    method: 'post',
+                                    parameters: {customer_id: <?php echo $customerId ?>},
+                                    onSuccess: function(transport) {
+                                            var response = JSON.parse(transport.responseText);
+                                        $('bid_number_<?php echo $customerId ?>').update(response);
+                                    }
+                                });
+
             <?php endif; ?>
                             }
 
